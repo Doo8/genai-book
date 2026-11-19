@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><title>Образец стиля презентации</title>
+<style>
+:root{--ink:#002e5e;--red:#ed1c24;--blue:#1c75bc;--soft:#eef3f8;--muted:#58708a;--line:#cbd9e6}
+*{box-sizing:border-box}body{margin:0;background:#dfe6ee;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+.slide{position:relative;width:1280px;height:720px;margin:24px auto;background:#fff;overflow:hidden;padding:44px 58px;
+ background-image:linear-gradient(#f3f6f9 1px,transparent 1px),linear-gradient(90deg,#f3f6f9 1px,transparent 1px);background-size:80px 80px}
+.kick{display:flex;align-items:center;gap:14px;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);border-bottom:1px solid var(--line);padding-bottom:12px}
+.kick:before{content:"";width:34px;height:4px;background:var(--red)}
+h1{font-size:50px;line-height:1.02;font-weight:900;text-transform:uppercase;margin:26px 0 0;max-width:1040px}h1 em{font-style:normal;color:var(--red)}
+.body{position:absolute;left:58px;right:58px;top:250px;bottom:56px;display:flex;flex-direction:column;justify-content:center}
+.cards{display:grid;gap:16px}.card{background:var(--soft);border-top:5px solid var(--blue);padding:18px 20px}.card:nth-child(even){border-top-color:var(--red)}
+.card h3{margin:0 0 8px;font-size:21px;font-weight:800}.card p{margin:0;font-size:17px;line-height:1.3;color:#24486d}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}.two section{background:var(--soft);padding:18px 22px;border-left:6px solid var(--muted)}.two section.b{border-left-color:var(--red)}
+.two h3{margin:0 0 10px;font-size:22px;font-weight:800}.two li{font-size:17px;line-height:1.3;margin:0 0 7px}
+.nums{display:grid;gap:18px}.num{background:#fff;border:2px solid var(--line);padding:18px 20px}.num b{display:block;font-size:46px;font-weight:900;color:var(--red);line-height:1}.num span{display:block;margin-top:8px;font-size:17px}
+table{width:100%;border-collapse:separate;border-spacing:0 5px}th{background:var(--ink);color:#fff;text-align:left;font-size:14px;text-transform:uppercase;padding:10px 14px}td{background:var(--soft);font-size:16px;padding:10px 14px}td:first-child{font-weight:800}
+.title .body{top:300px;justify-content:flex-start}.title h1{font-size:62px;margin-top:70px}.sub{font-size:26px;line-height:1.3;max-width:980px;margin:0 0 26px}
+.crit{position:absolute;right:58px;top:104px;background:var(--ink);color:#fff;font-size:15px;font-weight:800;padding:6px 14px}.crit.star{background:var(--red)}
+@media print{body{background:#fff}.slide{margin:0;page-break-after:always}@page{size:1280px 720px;margin:0}}
+</style></head><body>
+<!-- Образец 1: титул -->
+<section class="slide title"><div class="kick">Защита проекта</div><h1>Название <em>проекта</em></h1>
+<div class="body"><p class="sub">Одна фраза: что делаем и зачем</p></div></section>
+<!-- Образец 2: три карточки -->
+<section class="slide"><div class="kick">Рубрика слайда</div><h1>Заголовок <em>с акцентом</em></h1>
+<div class="body"><div class="cards" style="grid-template-columns:repeat(3,1fr)"><div class="card"><h3>Карточка 1</h3><p>Короткий текст до 25 слов.</p></div><div class="card"><h3>Карточка 2</h3><p>Короткий текст до 25 слов.</p></div><div class="card"><h3>Карточка 3</h3><p>Короткий текст до 25 слов.</p></div></div></div></section>
+<!-- Образец 3: две колонки -->
+<section class="slide"><div class="crit star">Критерий 2★</div><div class="kick">TO BE</div><h1>ИИ и <em>человек</em></h1>
+<div class="body"><div class="two"><section><h3>Делает ИИ</h3><ul><li>Шаг</li><li>Шаг</li></ul></section><section class="b"><h3>Делает человек</h3><ul><li>Шаг</li><li>Шаг</li></ul></section></div></div></section>
+<!-- Образец 4: крупные цифры -->
+<section class="slide"><div class="crit">Критерий 1</div><div class="kick">Проблема и AS IS</div><h1>Сейчас: <em>цифры</em></h1>
+<div class="body"><div class="nums" style="grid-template-columns:repeat(3,1fr)"><div class="num"><b>30 мин</b><span>на операцию · замер · источник</span></div><div class="num"><b>120</b><span>в месяц · факт · выгрузка</span></div><div class="num"><b>8%</b><span>ошибок · оценка · без источника</span></div></div></div></section>
+<!-- Образец 5: таблица -->
+<section class="slide"><div class="crit star">Критерий 4★</div><div class="kick">Риски</div><h1>Риски <em>и меры</em></h1>
+<div class="body"><table><tr><th>Риск</th><th>Мера</th><th>Кто отвечает</th></tr><tr><td>Выдуманная цифра</td><td>Расчёт кодом, проверка человеком</td><td>Владелец процесса</td></tr></table></div></section>
+</body></html>

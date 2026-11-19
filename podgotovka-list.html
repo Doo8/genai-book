@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Оценочный лист жюри</title>
+<base target="_top">
+<style>
+/* VOICE: рабочий бланк жюри в дизайн-системе «Школа ГенИИ»
+   IDEA: контентный слайд школы, превращённый в форму: navy-шапка, белое поле, pale-карточки с синей кромкой
+   PICTURE: два блока критериев — питч и демо — с живым подсчётом баллов
+   COLOUR and TYPE: navy #002e5e, blue #1c75bc, red #ed1c24 только крупно; Circe → Arial
+   LAYOUT: одна колонка до 880px, прямые углы, липкая navy-панель итога */
+:root{--navy:#002e5e;--blue:#1c75bc;--red:#ed1c24;--pale:#ecf0f5;--ink:#10273f;--muted:#5f7182;--line:#cdd8e4;--white:#fff;
+ --ok:#17825a;--ok-bg:#e9f7f1;--warn-bg:#fff7e8;--bad-bg:#fff0f0;--ask-bg:#fff3f3;--lead-n:#c8d9eb;--eb-n:#7dc8ff;--grid:#1c75bc10}
+*{box-sizing:border-box;min-width:0;border-radius:0}
+body{margin:0;background:var(--white);color:var(--ink);font:17px/1.35 Circe,Arial,sans-serif;
+ background-image:linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:128px 100%}
+.top{background:var(--navy);color:var(--white);padding:28px 0 30px}
+.in{max-width:880px;margin:0 auto;padding:0 20px}
+.eb{font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin:0 0 14px}
+.top .eb{color:var(--eb-n)}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.02;letter-spacing:-1.2px;font-weight:700;margin:0;text-wrap:balance}
+.accent{color:var(--red)}
+.top .lead{color:var(--lead-n);font-size:19px;margin:12px 0 0;max-width:720px}
+.wrap{max-width:880px;margin:0 auto;padding:24px 20px 150px}
+.tabs{display:flex;gap:0;margin-bottom:20px;border:1px solid var(--line)}
+.tab{flex:1;min-height:48px;border:0;background:var(--white);font:inherit;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+.tab[aria-selected=true]{background:var(--navy);color:var(--white)}
+.card{background:var(--pale);border-top:5px solid var(--blue);padding:22px;margin-bottom:14px}
+.lbl{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+input[type=text],textarea{width:100%;font:inherit;font-size:17px;padding:12px 14px;border:1px solid var(--line);background:var(--white);color:var(--ink)}
+input:focus,textarea:focus,button:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.row{display:flex;gap:10px;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.meta{font-size:14px;color:var(--muted)}
+.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:6px}
+.chip{min-height:48px;border:1px solid var(--line);background:var(--white);font:inherit;font-size:16px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.chip .st{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ok);font-weight:700}
+.chip[aria-pressed=true]{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.chip[aria-pressed=true] .st{color:#9fe0c4}
+.who{font-size:30px;line-height:1.1;font-weight:700;margin:0}
+.who small{display:block;font-size:16px;font-weight:400;color:var(--muted);margin-top:6px}
+.hint{font-size:15px;color:var(--muted);margin:10px 0 0}
+.star{color:var(--red);font-weight:700}
+.blk{margin:28px 0 0}
+.bh{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.bh h2{font-size:30px;line-height:1.1;margin:0;font-weight:700}
+.bh h2 small{display:block;font-size:16px;font-weight:400;color:var(--muted);margin-top:4px}
+.bsum{font-size:44px;font-weight:700;line-height:.9;color:var(--red);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bsum small{font-size:18px;color:var(--muted);font-weight:700}
+.crit{background:var(--pale);border-top:5px solid var(--blue);padding:20px 22px;margin-top:14px}
+.crit.miss{border-top-color:var(--red)}
+.ct{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.ct h3{font-size:22px;line-height:1.1;margin:0;font-weight:700}
+.ct .pts{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.crit.miss .pts{color:var(--ink)}
+.q{margin:10px 0 12px;font-size:17px}
+.ask{background:var(--ask-bg);border-left:6px solid var(--red);padding:10px 14px;margin:0 0 14px;font-size:16px}
+.ask b{font-weight:700}
+.opts{display:grid;gap:6px}
+.opt{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;text-align:left;width:100%;min-height:48px;padding:12px 14px;border:1px solid var(--line);background:var(--white);font:inherit;font-size:16px;line-height:1.35;color:var(--ink);cursor:pointer}
+.opt .n{display:grid;place-items:center;width:44px;height:44px;background:var(--pale);font-size:22px;font-weight:700;color:var(--navy)}
+.opt:hover:not(:disabled){border-color:var(--blue)}
+.opt[aria-checked=true]{background:var(--navy);border-color:var(--navy);color:var(--white)}
+.opt[aria-checked=true] .n{background:var(--red);color:var(--white)}
+.opt:disabled{opacity:.4;cursor:not-allowed}
+.opt small{display:block;font-size:14px;margin-top:4px;color:var(--muted)}
+.extra{background:var(--pale);border-top:5px solid var(--navy);padding:20px 22px;margin-top:28px}
+.extra h2{font-size:22px;margin:0 0 8px}
+.tg{display:flex;gap:12px;align-items:flex-start;padding:10px 0;cursor:pointer;font-size:16px}
+.tg input{width:22px;height:22px;margin-top:1px;flex:none;accent-color:var(--navy)}
+.tg small{display:block;color:var(--muted);font-size:14px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--navy);color:var(--white);padding:12px 0 10px;z-index:5}
+.bar .in{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.tot{font-size:44px;font-weight:700;line-height:.9;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tot small{font-size:18px;color:var(--lead-n)}
+.parts{font-size:14px;color:var(--lead-n);line-height:1.4}
+.parts b{color:var(--white)}
+.lvl{flex:1;font-size:15px;color:var(--white)}
+.go{min-height:48px;padding:0 24px;border:0;background:var(--red);color:var(--white);font:inherit;font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.go:disabled{opacity:.5;cursor:default}
+.msg{margin:8px 0 0;font-size:14px;color:var(--lead-n);min-height:0}
+.msg.err{color:#ffd0d2}
+.note{background:var(--bad-bg);border-left:6px solid var(--navy);padding:10px 14px;font-size:15px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:16px;background:var(--white)}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:4px 8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.p1{background:var(--ok);color:var(--white)}.p2{background:var(--warn-bg);color:var(--ink);box-shadow:inset 0 0 0 1px #f5a623}.p3{background:var(--bad-bg);color:var(--ink);box-shadow:inset 0 0 0 1px var(--red)}
+.flag{font-size:14px;color:var(--muted)}
+.empty{color:var(--muted);padding:12px 0}
+.ghost{min-height:44px;padding:0 16px;border:1px solid var(--navy);background:var(--white);font:inherit;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--navy)}
+.foot{font-size:11px;font-weight:700;color:var(--muted);margin-top:28px}
+[hidden]{display:none!important}
+@media(max-width:600px){
+ .bh{flex-direction:column;align-items:flex-start}
+ .tot{font-size:34px}
+ .parts{display:none}
+ table.stack thead{display:none}
+ table.stack tr{display:grid;padding:10px 0;border-bottom:1px solid var(--line)}
+ table.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0;text-align:right}
+ table.stack td::before{content:attr(data-l);color:var(--muted);font-size:13px;text-align:left}
+}
+@media(prefers-reduced-motion:no-preference){.crit,.card{animation:up .65s cubic-bezier(.16,1,.3,1) both}@keyframes up{from{opacity:0;transform:translateY(16px)}}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+  <p class="eb"><a href="podgotovka.html" style="color:inherit">← Подготовка к защите</a> · самооценка</p>
+  <h1>Оцените свой проект <span class="accent">по листу жюри</span></h1>
+  <p class="lead">Тот же лист, по которому оценивает жюри: два блока по четыре критерия — питч-презентация и демо работающего решения. Каждый критерий — 0, 1 или 2 балла, максимум 16. Оценка хранится только в этом браузере.</p>
+</div></header>
+<div class="wrap">
+  <div id="demo" hidden></div>
+
+  <div class="tabs" role="tablist" hidden>
+    <button class="tab" role="tab" id="t-score" aria-selected="true">Оценка</button>
+    <button class="tab" role="tab" id="t-sum" aria-selected="false">Сводка жюри</button>
+  </div>
+
+  <section id="v-score">
+    <input type="hidden" id="expert" value="Самооценка">
+    <div hidden><span id="cnt"></span><div id="chips"></div></div>
+
+    <div id="form" hidden>
+      <div class="card">
+        <p class="who" id="who"></p>
+        <p class="hint">У каждого критерия: что проверяем, что спросить, если не видно, и три уровня — нажмите тот, что совпадает с увиденным. <span class="star">★</span> — ключевой критерий: ноль по нему не даёт уровень «Готов к пилоту».</p>
+      </div>
+      <div id="crits"></div>
+      <div class="extra">
+        <h2>Особые случаи и комментарий</h2>
+        <label class="tg"><input type="checkbox" id="rec"><span>Демо показано по запасной записи<small>по критериям 5–7 — не больше 1 балла</small></span></label>
+        <label class="lbl" for="comment" style="margin-top:14px">Сильная сторона и главная доработка</label>
+        <textarea id="comment" rows="3" placeholder="Коротко, для обратной связи участнику"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section id="v-sum" hidden>
+    <div class="card">
+      <div class="row"><span class="meta" id="sumInfo"></span><button class="ghost" id="refresh">Обновить</button></div>
+      <table class="stack"><thead><tr><th>Участник</th><th>Экспертов</th><th>Балл</th><th>Уровень</th><th>Внимание</th></tr></thead><tbody id="sumBody"></tbody></table>
+      <p class="meta">Балл — среднее по экспертам с округлением до 0,5. Ноль по критерию со звёздочкой засчитывается, если его поставило большинство; при равенстве решает председатель.</p>
+    </div>
+  </section>
+  <p class="foot"><a href="podgotovka.html" style="color:inherit">← Подготовка к защите</a> · Программа по технологиям ИИ · 2026</p>
+</div>
+
+<div class="bar" id="bar" hidden>
+  <div class="in">
+    <div class="tot" id="tot">0 <small>/ 16</small></div>
+    <div class="parts" id="parts"></div>
+    <div class="lvl" id="lvl">Поставьте баллы по всем критериям</div>
+    <button class="go" id="save">Сохранить оценку</button>
+  </div>
+  <div class="in"><p class="msg" id="msg"></p></div>
+</div>
+
+<script>
+{
+const C=[
+ {g:'Презентация',t:'1. Проблема и AS IS',w:'слайд 1',
+  q:'Понимает ли участник процесс, который автоматизирует, и может ли цифрами доказать, что этот процесс «болит».',
+  a:'Откуда эта цифра — замер или оценка? Сколько таких операций в месяц?',
+  d:['Процесс не описан или описан общими словами («много ручной работы»); цифр «до» нет.',
+     'Процесс и узкое место показаны, но цифр «до» меньше трёх, или не ясно, замер это или оценка, или нет источника.',
+     'Процесс расписан по шагам (от 4), узкое место выделено и объяснено. Есть 3 цифры «до» — например, время на операцию, объём в месяц, доля ошибок — с пометкой «факт / оценка» и источником.']},
+ {g:'Презентация',t:'2. TO BE',s:1,w:'слайд 2, блок 03',
+  q:'Ясно ли, как процесс будет работать с агентом и где проходит граница ответственности между ИИ и человеком.',
+  a:'Что агент не делает никогда? Что происходит, если он не уверен?',
+  d:['Непонятно, что делает ИИ, а что человек, или агенту отдано решение с последствиями без контроля человека.',
+     'Разделение ИИ и человека видно, но не описано, что происходит при сбое (fallback) и когда агент останавливается.',
+     'Видно, какие шаги делает ИИ, а какие человек. Выбрано минимально достаточное решение (workflow, RAG или агент) и объяснено почему. Есть точка подтверждения человеком, fallback и условия остановки.']},
+ {g:'Презентация',t:'3. Эффект',w:'слайд 2, блок 04',
+  q:'Правдоподобен ли расчёт экономии и выводится ли он из цифр «до» (критерий 1).',
+  a:'Какое допущение сильнее всего влияет на результат? Что будет, если оно окажется хуже на треть?',
+  d:['Цифр эффекта нет, или они не связаны с цифрами «до» — взяты «с потолка».',
+     'Экономия посчитана, но не сходится с цифрами «до», не учтены затраты (ИИ, поддержка, проверка ошибок) или не названо ключевое допущение.',
+     'Часы и ₽ выводятся из цифр «до», затраты учтены, названо ключевое допущение и указан статус: прогноз или замер на прототипе.']},
+ {g:'Презентация',t:'4. Риски',s:1,w:'слайд 2, «Риски и контроль»',
+  q:'Понимает ли участник, что может пойти не так, и что уже сделано, чтобы это предотвратить.',
+  a:'Что будет, если в документ подложат команду для агента? К каким данным у агента есть доступ?',
+  d:['Рисков на слайде нет, или в презентации либо демо видны реальные данные (ФИО, реквизиты, цены, клиенты).',
+     'Риски названы, но без меры контроля или ответственного; проверку на атаки (инъекции, выход за права) не проводили.',
+     'Минимум 2 риска, у каждого есть мера и ответственный. Названы итоги проверки на атаки и права агента (можно в ответах). Все данные синтетические.']},
+ {g:'Демо',t:'5. Сквозной прогон',s:1,w:'экран',
+  q:'Работает ли прототип на самом деле — от входа до результата, а не только на слайдах.',
+  a:'Покажите, пожалуйста, ещё один типовой случай с самого начала.',
+  d:['Ни один запрос не дошёл до результата, или показаны только слайды и скриншоты.',
+     'До результата дошла часть запросов, или участнику пришлось вмешиваться по ходу: перезапускать, править данные, подсказывать агенту.',
+     '2–3 типовых запроса проходят от входа до результата без вмешательства, результат совпадает с ожидаемым.']},
+ {g:'Демо',t:'6. Поведение на краю',w:'экран',
+  q:'Не выдумывает ли агент ответ, когда данных нет или они непонятны.',
+  a:'Если участник сам не показал, попросите: «Подайте агенту пустой или неполный вход».',
+  d:['На пустой или неясный вход агент выдал уверенный ответ — выдумал данные.',
+     'Агент не выдумал ответ, но и не объяснил, чего не хватает, и не передал задачу человеку (например, просто упал с ошибкой).',
+     'Агент останавливается, объясняет, чего не хватает, и передаёт задачу человеку.']},
+ {g:'Демо',t:'7. Качество измерено',w:'слайд 2 или экран',
+  q:'Знает ли участник, насколько хорошо работает агент, в цифрах, а не «по ощущениям».',
+  a:'На скольких примерах проверяли? Сколько было ошибок и каких?',
+  d:['Качество не проверяли или оценивают на глаз: «работает хорошо».',
+     'Прогоны были, но без фиксированного тест-набора или без сравнения с ручной работой (baseline).',
+     'Прототип прогнан на тест-наборе от 10 случаев; есть метрики — точность, время, доля передач человеку — и сравнение с baseline.']},
+ {g:'Демо',t:'8. Понимание решения',w:'ответы на вопросы',
+  q:'Понимает ли участник своё решение и его ограничения, а не только умеет его показать.',
+  a:'Почему вы выбрали именно такое решение? Где ваш агент чаще всего ошибается?',
+  d:['На вопросы «почему так» и «где агент ошибается» ответить не может.',
+     'Объясняет, почему выбрано такое решение, но слабые места не называет или называет только после подсказки.',
+     'Объясняет выбор и сам называет, где агент ошибается и как это закрыто: fallback, проверка человеком, ограничение прав.']}
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const live=typeof google!=='undefined'&&google.script&&google.script.run;
+let parts=[],mine={},summary=[],cur=null,sc=Array(C.length).fill(null),busy=false,showMiss=false;
+
+/* ---------- сервер или демо ---------- */
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function call(fn,arg){
+  if(live)return new Promise((ok,no)=>google.script.run.withSuccessHandler(ok).withFailureHandler(e=>no(e&&e.message||String(e)))[fn](arg));
+  return Promise.resolve(demo(fn,arg));
+}
+function demo(fn,arg){
+  const P=Array.from({length:1},(_,i)=>({n:i+1,name:'',topic:''}));
+  P.length=1;P[0].name='Мой проект';
+  let all=store.get('jury-demo',[]);
+  if(fn==='submitScore'){const p=arg;all=all.filter(s=>!(s.n===p.n&&s.expert.trim().toLowerCase()===p.expert.trim().toLowerCase()));all.push({...p,total:p.c.reduce((a,b)=>a+b,0)});store.set('jury-demo',all);arg=p.expert}
+  const key=String(arg||'').trim().toLowerCase(),m={};
+  all.forEach(s=>{if(s.expert.trim().toLowerCase()===key)m[s.n]=s});
+  const sum=P.map(pt=>{const l=all.filter(s=>s.n===pt.n),k=l.length;if(!k)return{n:pt.n,name:pt.name,experts:0,avg:null,zeros:[],ties:[],level:''};
+    const avg=Math.round(l.reduce((a,s)=>a+s.total,0)/k*2)/2,zeros=[],ties=[];
+    STAR.forEach(i=>{const z=l.filter(s=>s.c[i]===0).length;if(z*2>k)zeros.push(i+1);else if(z*2===k)ties.push(i+1)});
+    return{n:pt.n,name:pt.name,experts:k,avg,zeros,ties,level:levelOf(avg,zeros.length>0)}});
+  return{participants:P,mine:m,summary:sum};
+}
+
+/* ---------- расчёт ---------- */
+const STAR=[1,3,4];
+function levelOf(t,zero){return t>=13&&!zero?'Готов к пилоту':t>=9?'Пилот после доработок':'Доработать прототип'}
+function pillCls(l){return l==='Готов к пилоту'?'p1':l==='Пилот после доработок'?'p2':'p3'}
+function eff(){const c=sc.slice();if($('rec').checked)for(let i=4;i<=6;i++)if(c[i]!=null)c[i]=Math.min(c[i],1);return c}
+
+/* ---------- отрисовка ---------- */
+function renderChips(){
+  $('chips').innerHTML=parts.map(p=>`<button class="chip${mine[p.n]?' done':''}" aria-pressed="${cur===p.n}" data-n="${p.n}"><span>${esc(p.name||'Участник '+p.n)}</span>${mine[p.n]?'<span class="st">оценён</span>':''}</button>`).join('')||'<span class="empty">Список участников пуст — заполните лист «Участники».</span>';
+  const done=Object.keys(mine).length;$('cnt').textContent=parts.length?`оценено вами: ${done} из ${parts.length}`:'';
+}
+const BL=[
+ {eb:'Блок 1 · критерии 1–4 · до 8 баллов',t:'Питч-презентация',s:'Презентация по паспорту пилота',from:0,to:4},
+ {eb:'Блок 2 · критерии 5–8 · до 8 баллов',t:'Демо работающего решения',s:'Живой прогон прототипа и ответы на вопросы',from:4,to:8}
+];
+const sub=(c,b)=>c.slice(b.from,b.to).reduce((a,x)=>a+(x||0),0);
+function crit(c,i,v){
+  const lock=false,rec=$('rec').checked&&i>=4&&i<=6;
+  const lbl=['0 баллов','1 балл','2 балла'];
+  const opts=[0,1,2].map(b=>{const off=lock&&b>0||rec&&b===2;
+    return `<button class="opt" role="radio" data-i="${i}" data-b="${b}" aria-checked="${v===b}" ${off?'disabled':''}><span class="n">${b}</span><span>${esc(c.d[b])}${off?`<small>${lock?'недоступно: отмечен стоп-фактор':'недоступно: демо по записи'}</small>`:''}</span></button>`}).join('');
+  return `<div class="crit${showMiss&&v==null?' miss':''}" id="cr${i}"><div class="ct"><h3>${esc(c.t)}${c.s?' <span class="star" title="Ноль по этому критерию не даёт уровень «Готов к пилоту»">★</span>':''}</h3><span class="pts">${v!=null?lbl[v]:(showMiss?'нужен балл':'')}</span></div><p class="q">${esc(c.q)}</p><p class="ask"><b>Если не видно, спросите:</b> ${esc(c.a)}</p><div class="opts" role="radiogroup" aria-label="${esc(c.t)}">${opts}</div></div>`;
+}
+function renderCrits(){
+  const c=eff();
+  $('crits').innerHTML=BL.map(b=>`<section class="blk"><div class="bh"><div><p class="eb" style="margin-bottom:8px">${b.eb}</p><h2>${b.t}<small>${b.s}</small></h2></div><div class="bsum">${sub(c,b)} <small>/ 8</small></div></div>${C.slice(b.from,b.to).map((x,k)=>crit(x,b.from+k,c[b.from+k])).join('')}</section>`).join('');
+  renderBar();
+}
+function renderBar(){
+  const c=eff(),filled=c.every(x=>x!=null),t=c.reduce((a,b)=>a+(b||0),0);
+  $('tot').innerHTML=`${t} <small>/ 16</small>`;
+  $('parts').innerHTML=`Питч <b>${sub(c,BL[0])}</b> / 8<br>Демо <b>${sub(c,BL[1])}</b> / 8`;
+  const zero=STAR.some(i=>c[i]===0);
+  $('lvl').textContent=filled?`Ваш уровень: ${levelOf(t,zero)}${zero?' (есть ноль по ★)':''}`:`Осталось оценить: ${c.filter(x=>x==null).length}`;
+  $('save').disabled=busy;
+}
+function renderWho(){
+  const p=parts.find(x=>x.n===cur);
+  $('who').innerHTML=`${esc(p&&p.name||'Участник '+cur)}${p&&p.topic?`<small>${esc(p.topic)}</small>`:''}${mine[cur]?'<small>Сохранённая самооценка загружена — новое сохранение её заменит</small>':''}`;
+}
+function renderSum(){
+  const rows=summary.filter(s=>s.experts>0);
+  $('sumInfo').textContent=`Оценено участников: ${rows.length} из ${summary.length}`;
+  $('sumBody').innerHTML=summary.map(s=>`<tr><td data-l="Участник">${esc(s.name||'—')}</td><td data-l="Экспертов" class="num">${s.experts}</td><td data-l="Балл" class="num">${s.avg==null?'—':String(s.avg).replace('.',',')}</td><td data-l="Уровень">${s.level?`<span class="pill ${pillCls(s.level)}">${esc(s.level)}</span>`:'—'}</td><td data-l="Внимание" class="flag">${[...s.zeros.map(z=>'ноль К'+z),...s.ties.map(z=>'К'+z+': решает председатель')].join('; ')}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">Оценок пока нет</td></tr>';
+}
+
+/* ---------- действия ---------- */
+function apply(d){parts=d.participants||[];mine=d.mine||{};summary=d.summary||[];renderChips();renderSum();if(cur)renderWho()}
+function load(){return call('getData',$('expert').value.trim()).then(apply).catch(e=>{$('chips').innerHTML=`<span class="empty">Не удалось загрузить: ${esc(e)}</span>`})}
+function pick(n){
+  cur=n;showMiss=false;const m=mine[n];
+  sc=m?m.c.slice():Array(C.length).fill(null);
+  $('rec').checked=!!(m&&m.rec);$('comment').value=m&&m.comment||'';
+  $('form').hidden=false;$('bar').hidden=false;$('msg').textContent='';
+  renderChips();renderWho();renderCrits();
+  $('form').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+}
+function save(){
+  const name=$('expert').value.trim();if(!cur)return;
+  
+  const miss=eff().findIndex(x=>x==null);
+  if(miss>=0){showMiss=true;renderCrits();$('msg').className='msg err';$('msg').textContent='Не хватает баллов по отмеченным критериям.';$('cr'+miss).scrollIntoView({block:'center'});return}
+  busy=true;renderBar();$('msg').className='msg';$('msg').textContent='Сохраняем…';
+  call('submitScore',{expert:name,n:cur,c:eff(),rec:$('rec').checked,comment:$('comment').value.trim()})
+   .then(d=>{apply(d);$('msg').textContent='Самооценка сохранена в этом браузере. Теперь — репетиция с жюри.';renderWho()})
+   .catch(e=>{$('msg').className='msg err';$('msg').textContent='Не сохранилось: '+e+'. Попробуйте ещё раз.'})
+   .finally(()=>{busy=false;renderBar()});
+}
+
+$('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(b)pick(+b.dataset.n)});
+$('crits').addEventListener('click',e=>{const b=e.target.closest('button[data-i]');if(!b||b.disabled)return;sc[+b.dataset.i]=+b.dataset.b;renderCrits()});
+['rec'].forEach(id=>$(id).addEventListener('change',renderCrits));
+$('save').addEventListener('click',save);
+$('refresh').addEventListener('click',()=>{$('sumInfo').textContent='Обновляем…';load()});
+let tm;$('expert').addEventListener('input',()=>{store.set('jury-expert',$('expert').value);renderBar();clearTimeout(tm);tm=setTimeout(load,600)});
+function tab(sum){$('t-score').setAttribute('aria-selected',!sum);$('t-sum').setAttribute('aria-selected',sum);$('v-score').hidden=sum;$('v-sum').hidden=!sum;$('bar').hidden=sum||!cur;if(sum)load()}
+$('t-score').addEventListener('click',()=>tab(false));$('t-sum').addEventListener('click',()=>tab(true));
+
+$('demo').hidden=true;
+load().then(()=>{pick(1);window.scrollTo(0,0)});
+}
+</script>
+</body>
+</html>
